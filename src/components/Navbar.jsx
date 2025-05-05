@@ -26,7 +26,7 @@ const Navbar = () => {
             {isPlaying ? <CgPlayPauseO /> : <CgPlayButtonO />}
           </button>
           <button
-            className="text-white font-bold py-2 px-4 rounded w-full sm:w-auto flex items-center space-x-2"
+            className="text-white font-bold  py-2 px-4 rounded w-full sm:w-auto flex items-center space-x-2"
             onClick={toggleSidebar}
           >
             <RxHamburgerMenu />
@@ -36,7 +36,7 @@ const Navbar = () => {
 
       {/* Sidebar */}
       {isSidebarOpen && (
-        <div className="fixed top-0 right-0 w-64 h-full text-white shadow-lg" style={{ backgroundColor: '#95d5b2' }}>
+        <div className="fixed top-0 right-0 w-64 h-full text-white shadow-lg" style={{ backgroundColor: '#52b788' }}>
           {/* Close Button */}
           <div className="flex justify-end p-4">
             <button
