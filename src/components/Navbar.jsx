@@ -20,13 +20,13 @@ const Navbar = () => {
         <div className="text-xl font-bold">ADT मराठी</div>
         <div className="flex gap-x-4 mt-2 sm:mt-0">
           <button
-            className="font-bold py-2 w-full sm:w-auto flex items-center space-x-1"
+            className="font-bold py-2 w-full sm:w-auto flex items-center space-x-1 cursor-pointer"
             onClick={handlePlayPause}
           >
             {isPlaying ? <CgPlayPauseO /> : <CgPlayButtonO />}
           </button>
           <button
-            className="text-white font-bold  py-2 px-4 rounded w-full sm:w-auto flex items-center space-x-2"
+            className="text-white font-bold  py-2 px-4 rounded w-full sm:w-auto flex items-center space-x-2 cursor-pointer"
             onClick={toggleSidebar}
           >
             <RxHamburgerMenu />
