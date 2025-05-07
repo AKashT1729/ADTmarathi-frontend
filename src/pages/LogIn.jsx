@@ -28,17 +28,17 @@ const LogIn = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-      <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+      <div className="w-full max-w-sm p-8 bg-white rounded-lg shadow-lg"> {/* Increased padding */}
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-8"> {/* Increased margin-bottom */}
           Admin Login
         </h2>
         {error && (
-          <div className="mb-4 text-sm text-red-600 bg-red-100 p-2 rounded">
+          <div className="mb-6 text-sm text-red-600 bg-red-100 p-3 rounded"> {/* Increased margin-bottom */}
             {error}
           </div>
         )}
         <form onSubmit={handleLogin}>
-          <div className="mb-4">
+          <div className="mb-6"> {/* Increased margin-bottom */}
             <label
               htmlFor="identifier"
               className="block text-sm font-medium text-gray-700"
@@ -55,7 +55,7 @@ const LogIn = () => {
               required
             />
           </div>
-          <div className="mb-6">
+          <div className="mb-8"> {/* Increased margin-bottom */}
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
