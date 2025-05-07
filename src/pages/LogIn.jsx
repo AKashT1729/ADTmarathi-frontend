@@ -76,7 +76,7 @@ const LogIn = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 text-lg text-white font-semibold rounded-xl transition duration-200 ${
+            className={`w-full cursor-pointer py-3 text-lg text-white font-semibold rounded-xl transition duration-200 ${
               loading
                 ? "bg-green-400 cursor-not-allowed"
                 : "bg-green-500 hover:bg-green-600"
@@ -85,6 +85,14 @@ const LogIn = () => {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
+
+        {/* Forgot Password Link */}
+        <p className="mt-4 text-center text-sm text-gray-600">
+          Forgot your password?{" "}
+          <a href="/forgot-password" className="text-green-500 hover:underline">
+            Reset it here
+          </a>
+        </p>
       </div>
     </div>
   );
