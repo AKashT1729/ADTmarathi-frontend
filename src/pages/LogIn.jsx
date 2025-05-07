@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const LogIn = () => {
-  const [identifier, setIdentifier] = useState(""); // State for email or username
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -14,35 +14,35 @@ const LogIn = () => {
 
     try {
       const response = await axios.post("/api/v1/admin/login", {
-        identifier, // Can be email or username
+        identifier,
         password,
       });
+
       console.log("Login successful:", response.data);
-      // Redirect or handle successful login
+      // TODO: Handle success (e.g., redirect or save token)
     } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong");
+      setError(err.response?.data?.message || "Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-      <div className="w-full max-w-sm p-8 bg-white rounded-lg shadow-lg"> {/* Increased padding */}
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-8"> {/* Increased margin-bottom */}
+    <div className="min-h-screen bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center px-4">
+      <div className="w-full max-w-lg bg-white p-10 rounded-2xl shadow-2xl">
+        <h2 className="text-4xl font-extrabold text-center text-gray-800 mb-8">
           Admin Login
         </h2>
+
         {error && (
-          <div className="mb-6 text-sm text-red-600 bg-red-100 p-3 rounded"> {/* Increased margin-bottom */}
+          <div className="mb-6 text-base text-red-600 bg-red-100 p-4 rounded-lg border border-red-200">
             {error}
           </div>
         )}
-        <form onSubmit={handleLogin}>
-          <div className="mb-6"> {/* Increased margin-bottom */}
-            <label
-              htmlFor="identifier"
-              className="block text-sm font-medium text-gray-700"
-            >
+
+        <form onSubmit={handleLogin} className="space-y-6">
+          <div>
+            <label htmlFor="identifier" className="block text-lg font-medium text-gray-700">
               Email or Username
             </label>
             <input
@@ -50,16 +50,15 @@ const LogIn = () => {
               id="identifier"
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
-              className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              autoComplete="username"
               placeholder="Enter your email or username"
               required
+              className="w-full mt-2 px-5 py-3 text-lg border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
-          <div className="mb-8"> {/* Increased margin-bottom */}
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
+
+          <div>
+            <label htmlFor="password" className="block text-lg font-medium text-gray-700">
               Password
             </label>
             <input
@@ -67,15 +66,21 @@ const LogIn = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              autoComplete="current-password"
               placeholder="Enter your password"
               required
+              className="w-full mt-2 px-5 py-3 text-lg border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
+
           <button
             type="submit"
-            className="w-full px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
             disabled={loading}
+            className={`w-full py-3 text-lg text-white font-semibold rounded-xl transition duration-200 ${
+              loading
+                ? "bg-green-400 cursor-not-allowed"
+                : "bg-green-500 hover:bg-green-600"
+            } focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1`}
           >
             {loading ? "Logging in..." : "Login"}
           </button>
