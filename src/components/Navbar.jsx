@@ -16,20 +16,20 @@ const Navbar = () => {
 
   return (
     <div>
-      <nav className="flex flex-wrap justify-between items-center p-4" style={{ backgroundColor: '#40916c', color: 'white' }}>
-        <div className="text-xl font-bold">ADT मराठी</div>
-        <div className="flex gap-x-4 mt-2 sm:mt-0">
+      <nav className="flex flex-wrap justify-between items-center p-4 h-14" style={{ backgroundColor: '#95d5b2', color: 'white' }}>
+        <div className="text-2xl font-bold ">ADT मराठी</div>
+        <div className="flex gap-x-6 mt-2 sm:mt-0">
           <button
             className="font-bold py-2 w-full sm:w-auto flex items-center space-x-1 cursor-pointer"
             onClick={handlePlayPause}
           >
-            {isPlaying ? <CgPlayPauseO /> : <CgPlayButtonO />}
+            {isPlaying ? <CgPlayPauseO className="text-3xl" /> : <CgPlayButtonO className="text-3xl" />}
           </button>
           <button
-            className="text-white font-bold  py-2 px-4 rounded w-full sm:w-auto flex items-center space-x-2 cursor-pointer"
+            className="text-white font-bold py-2 px-4 rounded w-full sm:w-auto flex items-center space-x-2 cursor-pointer"
             onClick={toggleSidebar}
           >
-            <RxHamburgerMenu />
+            <RxHamburgerMenu className="text-3xl" />
           </button>
         </div>
       </nav>
@@ -40,10 +40,10 @@ const Navbar = () => {
           {/* Close Button */}
           <div className="flex justify-end p-4">
             <button
-              className="text-white text-2xl"
+              className="text-white"
               onClick={toggleSidebar}
             >
-              <RxCross2 />
+              <RxCross2 className="text-3xl" />
             </button>
           </div>
 
