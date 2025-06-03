@@ -7,7 +7,7 @@ const Footer = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage = location.pathname === '/' || location.pathname === '/home';
-  const isMarketPage = location.pathname === '/market';
+  const isMarketPage = location.pathname === '/marketrates';
   const isContactPage = location.pathname === '/contact';
 
   return (
@@ -22,7 +22,7 @@ const Footer = () => {
         </div>
         <div
           className="flex flex-col items-center cursor-pointer"
-          onClick={() => navigate('/market')}
+          onClick={() => navigate('/marketrates')}
         >
           {isMarketPage ? <IoBarChart className="text-2xl mb-1" /> : <IoBarChartOutline className="text-2xl mb-1" />}
           <span>Market</span>

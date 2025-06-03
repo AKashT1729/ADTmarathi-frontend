@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
-import { CgPlayButtonO, CgPlayPauseO } from "react-icons/cg";
 import { RxHamburgerMenu, RxCross2 } from "react-icons/rx";
 
 const Navbar = () => {
-  const [isPlaying, setIsPlaying] = useState(false); // State to track play/pause
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to track sidebar visibility
-
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying); // Toggle the play/pause state
-  };
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen); // Toggle the sidebar visibility
@@ -19,12 +13,6 @@ const Navbar = () => {
       <nav className="flex flex-wrap justify-between items-center p-4 h-14" style={{ backgroundColor: '#95d5b2', color: 'white' }}>
         <div className="text-2xl font-bold ">ADT मराठी</div>
         <div className="flex gap-x-6 mt-2 sm:mt-0">
-          <button
-            className="font-bold py-2 w-full sm:w-auto flex items-center space-x-1 cursor-pointer"
-            onClick={handlePlayPause}
-          >
-            {isPlaying ? <CgPlayPauseO className="text-3xl" /> : <CgPlayButtonO className="text-3xl" />}
-          </button>
           <button
             className="text-white font-bold py-2 px-4 rounded w-full sm:w-auto flex items-center space-x-2 cursor-pointer"
             onClick={toggleSidebar}
