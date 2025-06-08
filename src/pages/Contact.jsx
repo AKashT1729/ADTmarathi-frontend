@@ -1,13 +1,17 @@
 import React from "react";
 import { MdKeyboardBackspace } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const Contact = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-white flex  px-2 py-6">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-4 sm:p-6">
-        {/* Header with Back Arrow and Title */}
         <div className="flex items-center mb-4 h-14 bg-green-100 rounded-md px-3">
-          <button className="text-xl text-gray-600 mr-2 p-1 rounded-full hover:bg-gray-100 cursor-pointer">
+          <button
+            className="text-xl text-gray-600 mr-2 p-1 rounded-full hover:bg-gray-100 cursor-pointer"
+            onClick={() => navigate("/")}
+          >
             <MdKeyboardBackspace />
           </button>
 
@@ -16,7 +20,6 @@ const Contact = () => {
           </h1>
         </div>
 
-        {/* Title and Description */}
         <div className="w-full ml-[10px]">
           <h2 className="text-xl font-bold mb-4 text-green-700">
             Get in touch
