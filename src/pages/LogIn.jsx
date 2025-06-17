@@ -1,27 +1,36 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LogIn = () => {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     try {
-      const response = await axios.post("/api/v1/admin/login", {
-        identifier,
-        password,
-      });
+      // Only send one of username or email, as per your backend requirement
+      const payload = identifier.includes("@")
+        ? { email: identifier, password }
+        : { username: identifier, password };
 
-      console.log("Login successful:", response.data);
-      // TODO: Handle success (e.g., redirect or save token)
+      const response = await axios.post(`/api/v1/users/login`, payload);
+
+      if (response.status === 200) {
+        navigate("/blogpost");
+      } else {
+        setError("Invalid credentials. Please try again.");
+      }
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed. Please try again.");
+      setError(
+        err.response?.data?.message ||
+          "Login failed. Please check your credentials and try again."
+      );
     } finally {
       setLoading(false);
     }

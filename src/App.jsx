@@ -7,6 +7,8 @@ import MarketRates from "./pages/MarketRates";
 import BlogPost from "./pages/BlogPost";
 import Home from "./pages/Home";
 import SingleBlog from "./pages/SingleBlog";
+import LogIn from "./pages/LogIn";
+import ChangePassword from "./pages/ChangePassword";
 
 function App() {
   const location = useLocation();
@@ -23,6 +25,8 @@ function App() {
         <Route path="/marketrates" element={<MarketRates />} />
         <Route path="/blogpost" element={<BlogPost />} />
         <Route path="/singleblog" element={<SingleBlog />} />
+        <Route path="/admin" element={<LogIn />} />
+        <Route path="/forgot-password" element={<ChangePassword />}/>
         {/* Add other routes here */}
       </Routes>
       <Footer />
