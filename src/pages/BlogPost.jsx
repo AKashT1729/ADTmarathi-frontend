@@ -1,111 +1,106 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { MdKeyboardBackspace } from "react-icons/md";
-import { FaRegThumbsUp, FaRegCommentDots, FaShareAlt } from "react-icons/fa";
-import axios from 'axios';
-import BlogCards from '../components/BlogCards';
-
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const BlogPost = () => {
-  const query = useQuery();
   const navigate = useNavigate();
-  const blogId = query.get('id');
-  const [blog, setBlog] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [form, setForm] = useState({
+    title: "",
+    content: "",
+    blogImageUrl: "",
+    applyUrl: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  useEffect(() => {
-    if (!blogId) {
-      navigate('/'); // redirect if no id
-      return;
-    }
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-    const fetchBlog = async () => {
-      try {
-        const { data } = await axios.get(`http://localhost:8000/api/v1/blogs/blogs/${blogId}`);
-        setBlog(data.blog);
-      } catch (error) {
-        console.error("Error fetching blog:", error);
-        navigate('/');
-      } finally {
-        setLoading(false);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMsg("");
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem("token"); // Assumes JWT is stored in localStorage
+      const response = await axios.post(
+        `/api/v1/blogs/blogs`,
+        form,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        navigate("/"); // redirect to blog list/home
       }
-    };
-
-    fetchBlog();
-  }, [blogId, navigate]);
-
-  if (loading) return <div className="text-center mt-20 text-lg text-gray-500">Loading blog post...</div>;
-  if (!blog) return null;
-
-  const paragraphs = blog.content.split(/\n{2,}|\r\n\r\n/);
+    } catch (error) {
+      console.error(error);
+      setErrorMsg(
+        error.response?.data?.message ||
+          "Something went wrong while posting the blog."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center px-2 py-6">
-      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-6 mb-8">
-        {/* Header */}
-        <div className="flex items-center mb-6 h-14 bg-green-100 rounded-md px-3">
-          <button
-            className="text-2xl text-gray-600 mr-2 p-2 rounded-full hover:bg-gray-200 transition"
-            onClick={() => navigate(-1)}
-            aria-label="Back"
-          >
-            <MdKeyboardBackspace />
-          </button>
-          <h1 className="flex-1 text-center font-bold text-xl text-gray-900 truncate">{blog.title}</h1>
-          <div className="w-8" />
-        </div>
+    <div className="max-w-xl mx-auto p-4 mt-10 bg-white rounded-xl shadow-md border">
+      <h2 className="text-2xl font-bold mb-4 text-center">Add New Blog Post</h2>
 
-        {/* Category Tag */}
-        <span className="inline-block bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full mb-2 capitalize">
-          {blog.category || 'General'}
-        </span>
+      {errorMsg && <div className="text-red-600 text-sm mb-4">{errorMsg}</div>}
 
-        {/* Blog Title */}
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">{blog.title}</h1>
-
-        {/* Date Info */}
-        <p className="text-gray-400 text-xs mb-4">
-          ADTMarathi &middot; {new Date(blog.createdAt).toLocaleDateString()} &middot; <span className="italic">Blog</span>
-        </p>
-
-        {/* Blog Image */}
-        <img
-          src={blog.blogImageUrl}
-          alt={blog.title}
-          className="w-full h-64 object-cover rounded-lg mb-6"
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="text"
+          name="title"
+          placeholder="Title"
+          className="w-full p-3 border rounded-lg"
+          value={form.title}
+          onChange={handleChange}
+          required
         />
 
-        {/* Content */}
-        <div className="text-gray-700 text-base mb-6 leading-7">
-          {paragraphs.map((para, idx) => (
-            <p key={idx} className="mb-4">{para}</p>
-          ))}
-        </div>
+        <textarea
+          name="content"
+          placeholder="Content"
+          className="w-full p-3 border rounded-lg h-32"
+          value={form.content}
+          onChange={handleChange}
+          required
+        />
 
-        {/* Action Buttons */}
-        <div className="flex gap-6 mb-4 justify-center text-sm">
-          <button className="flex items-center gap-2 text-gray-600 hover:text-green-700 transition">
-            <FaRegThumbsUp /> <span>Like</span>
-          </button>
-          <button className="flex items-center gap-2 text-gray-600 hover:text-green-700 transition">
-            <FaRegCommentDots /> <span>Comment</span>
-          </button>
-          <button className="flex items-center gap-2 text-gray-600 hover:text-green-700 transition">
-            <FaShareAlt /> <span>Share</span>
-          </button>
-        </div>
-      </div>
+        <input
+          type="url"
+          name="blogImageUrl"
+          placeholder="Image URL"
+          className="w-full p-3 border rounded-lg"
+          value={form.blogImageUrl}
+          onChange={handleChange}
+          required
+        />
 
-      {/* Recent Posts */}
-      <div className="w-full max-w-2xl">
-        <h2 className="text-lg font-semibold mb-4 text-green-700">Recent Posts</h2>
-        <BlogCards />
-      </div>
+        <input
+          type="url"
+          name="applyUrl"
+          placeholder="Apply URL (optional)"
+          className="w-full p-3 border rounded-lg"
+          value={form.applyUrl}
+          onChange={handleChange}
+        />
 
-      <div className="h-10" />
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-green-600 hover:bg-green-700 text-white w-full py-3 rounded-lg font-semibold transition"
+        >
+          {loading ? "Posting..." : "Post Blog"}
+        </button>
+      </form>
     </div>
   );
 };

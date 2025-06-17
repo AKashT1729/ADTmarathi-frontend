@@ -6,6 +6,7 @@ import Contact from "./pages/Contact";
 import MarketRates from "./pages/MarketRates";
 import BlogPost from "./pages/BlogPost";
 import Home from "./pages/Home";
+import SingleBlog from "./pages/SingleBlog";
 
 function App() {
   const location = useLocation();
@@ -21,6 +22,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/marketrates" element={<MarketRates />} />
         <Route path="/blogpost" element={<BlogPost />} />
+        <Route path="/singleblog" element={<SingleBlog />} />
         {/* Add other routes here */}
       </Routes>
       <Footer />
