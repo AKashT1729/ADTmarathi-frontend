@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import LogOutBtn from "../components/LogOutBtn";
+
+// Helper to get cookie value by name
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? decodeURIComponent(match[2]) : null;
+}
 
 const BlogPost = () => {
   const navigate = useNavigate();
@@ -23,9 +30,12 @@ const BlogPost = () => {
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("token"); // Assumes JWT is stored in localStorage
+      const token = getCookie("accessToken");
+      console.log("Form data:", form);
+      console.log("Token:", token);
+
       const response = await axios.post(
-        `/api/v1/blogs/blogs`,
+        `/api/v1/admin/blogs`,
         form,
         {
           headers: {
@@ -35,13 +45,17 @@ const BlogPost = () => {
       );
 
       if (response.status === 201) {
-        navigate("/"); // redirect to blog list/home
+        navigate("/");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Blog post error:", error, error.response);
       setErrorMsg(
         error.response?.data?.message ||
-          "Something went wrong while posting the blog."
+        error.response?.data?.massage ||
+        error.response?.data?.error ||
+        error.response?.data ||
+        error.message ||
+        "Something went wrong while posting the blog."
       );
     } finally {
       setLoading(false);
@@ -50,6 +64,9 @@ const BlogPost = () => {
 
   return (
     <div className="max-w-xl mx-auto p-4 mt-10 bg-white rounded-xl shadow-md border">
+       <div className="absolute top-4 right-4">
+        <LogOutBtn />
+      </div>
       <h2 className="text-2xl font-bold mb-4 text-center">Add New Blog Post</h2>
 
       {errorMsg && <div className="text-red-600 text-sm mb-4">{errorMsg}</div>}
