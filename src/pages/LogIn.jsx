@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const LogIn = () => {
   const [identifier, setIdentifier] = useState("");
@@ -8,29 +8,28 @@ const LogIn = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
+    
     try {
       // Only send one of username or email, as per your backend requirement
       const payload = identifier.includes("@")
         ? { email: identifier, password }
         : { username: identifier, password };
 
-      const response = await axios.post(`/api/v1/users/login`, payload);
+      const result = await login(payload);
 
-      if (response.status === 200) {
+      if (result.success) {
         navigate("/blogpost");
       } else {
-        setError("Invalid credentials. Please try again.");
+        setError(result.error || "Invalid credentials. Please try again.");
       }
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-          "Login failed. Please check your credentials and try again."
-      );
+      setError("Login failed. Please check your credentials and try again.");
     } finally {
       setLoading(false);
     }

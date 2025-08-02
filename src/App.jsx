@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import SingleBlog from "./pages/SingleBlog";
 import LogIn from "./pages/LogIn";
 import ChangePassword from "./pages/ChangePassword";
+import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
   const location = useLocation();
@@ -16,7 +17,7 @@ function App() {
   const hideNavbar = hideNavbarPaths.includes(location.pathname.toLowerCase());
 
   return (
-    <>
+    <AuthProvider>
       {!hideNavbar && <Navbar />}
       <Routes>
         <Route path="/"   element={<Home />} />
@@ -30,7 +31,7 @@ function App() {
         {/* Add other routes here */}
       </Routes>
       <Footer />
-    </>
+    </AuthProvider>
   );
 }
 

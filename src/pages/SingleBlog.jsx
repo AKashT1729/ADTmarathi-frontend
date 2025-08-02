@@ -4,6 +4,8 @@ import {
   MdKeyboardBackspace,
   MdBookmark,
   MdBookmarkBorder,
+  MdEdit,
+  MdDelete,
 } from "react-icons/md";
 import {
   FaRegThumbsUp,
@@ -18,6 +20,7 @@ import {
 import { BiCopy } from "react-icons/bi";
 import axios from "axios";
 import BlogCards from "../components/BlogCards";
+import { useAuth } from "../contexts/AuthContext";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -26,6 +29,7 @@ function useQuery() {
 const SingleBlog = () => {
   const query = useQuery();
   const navigate = useNavigate();
+  const { isAdmin } = useAuth();
   const blogId = query.get("id");
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -34,6 +38,7 @@ const SingleBlog = () => {
   const [bookmarked, setBookmarked] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // Close share menu when clicking outside
   useEffect(() => {
@@ -145,6 +150,27 @@ const SingleBlog = () => {
     setShowShareMenu(false);
   };
 
+  const handleEdit = () => {
+    // Navigate to edit page with blog ID
+    navigate(`/blogpost?edit=${blogId}`);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/api/v1/blogs/blogs/${blogId}`);
+      alert("Blog deleted successfully!");
+      navigate("/");
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+      alert("Failed to delete blog. Please try again.");
+    }
+    setShowDeleteConfirm(false);
+  };
+
+  const confirmDelete = () => {
+    setShowDeleteConfirm(true);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center px-2 py-6">
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-6 mb-8">
@@ -200,6 +226,28 @@ const SingleBlog = () => {
             <p>No content available.</p>
           )}
         </div>
+
+        {/* Admin Actions */}
+        {isAdmin() && (
+          <div className="border-t border-gray-200 pt-4 mb-4">
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={handleEdit}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200"
+              >
+                <MdEdit className="text-lg" />
+                <span className="text-sm font-medium">Edit</span>
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200"
+              >
+                <MdDelete className="text-lg" />
+                <span className="text-sm font-medium">Delete</span>
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Action Buttons */}
         <div className="border-t border-gray-200 pt-6 mb-6">
@@ -354,6 +402,34 @@ const SingleBlog = () => {
         </h2>
         <BlogCards />
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-sm mx-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Confirm Delete
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete this blog post? This action cannot be undone.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="h-10" />
     </div>
