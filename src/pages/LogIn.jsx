@@ -24,7 +24,8 @@ const LogIn = () => {
       const result = await login(payload);
 
       if (result.success) {
-        navigate("/blogpost");
+        // Redirect to home page where admin can access sidebar features
+        navigate("/");
       } else {
         setError(result.error || "Invalid credentials. Please try again.");
       }

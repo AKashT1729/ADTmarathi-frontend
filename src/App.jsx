@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import SingleBlog from "./pages/SingleBlog";
 import LogIn from "./pages/LogIn";
 import ChangePassword from "./pages/ChangePassword";
+import NewPost from "./pages/NewPost";
 import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
@@ -25,8 +26,11 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/marketrates" element={<MarketRates />} />
         <Route path="/blogpost" element={<BlogPost />} />
+        <Route path="/blog" element={<BlogPost />} />
         <Route path="/singleblog" element={<SingleBlog />} />
+        <Route path="/login" element={<LogIn />} />
         <Route path="/admin" element={<LogIn />} />
+        <Route path="/admin/new-post" element={<NewPost />} />
         <Route path="/forgot-password" element={<ChangePassword />}/>
         {/* Add other routes here */}
       </Routes>

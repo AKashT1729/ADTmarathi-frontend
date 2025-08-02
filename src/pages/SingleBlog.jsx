@@ -29,7 +29,7 @@ function useQuery() {
 const SingleBlog = () => {
   const query = useQuery();
   const navigate = useNavigate();
-  const { isAdmin } = useAuth();
+  const { isAdmin, user, isAuthenticated } = useAuth();
   const blogId = query.get("id");
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -62,7 +62,7 @@ const SingleBlog = () => {
 
     const fetchBlog = async () => {
       try {
-        const { data } = await axios.get(`/api/v1/blogs/blogs/${blogId}`);
+        const { data } = await axios.get(`/api/v1/blogs/${blogId}`);
         // The blog is inside data.data
         setBlog(data.data);
         // Initialize like count (you can get this from API)
@@ -157,7 +157,7 @@ const SingleBlog = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/v1/blogs/blogs/${blogId}`);
+      await axios.delete(`/api/v1/blogs/${blogId}`);
       alert("Blog deleted successfully!");
       navigate("/");
     } catch (error) {
@@ -227,7 +227,7 @@ const SingleBlog = () => {
           )}
         </div>
 
-        {/* Admin Actions */}
+        {/* Admin Actions - Only show for admin users */}
         {isAdmin() && (
           <div className="border-t border-gray-200 pt-4 mb-4">
             <div className="flex gap-3 justify-end">
