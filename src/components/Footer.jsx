@@ -11,28 +11,28 @@ const Footer = () => {
   const isContactPage = location.pathname === '/contact';
 
   return (
-    <footer className="text-gray-600 py-4 fixed bottom-0 w-full bg-white border-t border-gray-200">
-      <div className="container mx-auto flex justify-evenly items-center h-20">
+    <footer className="fixed left-0 bottom-0 w-full z-50 text-gray-600 py-2 bg-white border-t border-gray-200 shadow-md">
+      <div className="container mx-auto flex justify-evenly items-center h-16">
         <div
-          className="flex flex-col items-center cursor-pointer"
+          className={`flex flex-col items-center cursor-pointer transition-colors duration-200 ${isHomePage ? "text-green-600 font-semibold" : ""}`}
           onClick={() => navigate('/')}
         >
           {isHomePage ? <IoHome className="text-2xl mb-1" /> : <IoHomeOutline className="text-2xl mb-1" />}
-          <span>Home</span>
+          <span className="text-xs">Home</span>
         </div>
         <div
-          className="flex flex-col items-center cursor-pointer"
+          className={`flex flex-col items-center cursor-pointer transition-colors duration-200 ${isMarketPage ? "text-green-600 font-semibold" : ""}`}
           onClick={() => navigate('/marketrates')}
         >
           {isMarketPage ? <IoBarChart className="text-2xl mb-1" /> : <IoBarChartOutline className="text-2xl mb-1" />}
-          <span>Market</span>
+          <span className="text-xs">Market</span>
         </div>
         <div
-          className="flex flex-col items-center cursor-pointer"
+          className={`flex flex-col items-center cursor-pointer transition-colors duration-200 ${isContactPage ? "text-green-600 font-semibold" : ""}`}
           onClick={() => navigate('/contact')}
         >
           {isContactPage ? <MdEmail className="text-2xl mb-1" /> : <MdOutlineMailOutline className="text-2xl mb-1" />}
-          <span>Contact</span>
+          <span className="text-xs">Contact</span>
         </div>
       </div>
     </footer>

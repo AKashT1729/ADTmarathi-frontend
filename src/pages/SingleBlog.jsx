@@ -2,15 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   MdKeyboardBackspace,
-  MdBookmark,
-  MdBookmarkBorder,
   MdEdit,
   MdDelete,
 } from "react-icons/md";
 import {
-  FaRegThumbsUp,
-  FaThumbsUp,
-  FaRegCommentDots,
   FaShareAlt,
   FaTwitter,
   FaFacebook,
@@ -33,9 +28,6 @@ const SingleBlog = () => {
   const blogId = query.get("id");
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-  const [bookmarked, setBookmarked] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -65,8 +57,6 @@ const SingleBlog = () => {
         const { data } = await axios.get(`/api/v1/blogs/${blogId}`);
         // The blog is inside data.data
         setBlog(data.data);
-        // Initialize like count (you can get this from API)
-        setLikeCount(Math.floor(Math.random() * 100) + 1); // Mock data
       } catch (error) {
         console.error("Error fetching blog:", error);
         navigate("/");
@@ -92,15 +82,6 @@ const SingleBlog = () => {
     );
 
   const paragraphs = blog.content ? blog.content.split(/\n{2,}|\r\n\r\n/) : [];
-
-  const handleLike = () => {
-    setLiked(!liked);
-    setLikeCount((prev) => (liked ? prev - 1 : prev + 1));
-  };
-
-  const handleBookmark = () => {
-    setBookmarked(!bookmarked);
-  };
 
   const handleShare = (platform) => {
     const url = window.location.href;
@@ -227,93 +208,14 @@ const SingleBlog = () => {
           )}
         </div>
 
-        {/* Admin Actions - Only show for admin users */}
-        {isAdmin() && (
-          <div className="border-t border-gray-200 pt-4 mb-4">
-            <div className="flex gap-3 justify-end">
-              <button
-                onClick={handleEdit}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200"
-              >
-                <MdEdit className="text-lg" />
-                <span className="text-sm font-medium">Edit</span>
-              </button>
-              <button
-                onClick={confirmDelete}
-                className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200"
-              >
-                <MdDelete className="text-lg" />
-                <span className="text-sm font-medium">Delete</span>
-              </button>
-            </div>
-          </div>
-        )}
 
-        {/* Action Buttons */}
+        {/* Share Button */}
         <div className="border-t border-gray-200 pt-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            {/* Like Button */}
-            <button
-              onClick={handleLike}
-              className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 ${
-                liked
-                  ? "bg-red-50 text-red-600 shadow-md"
-                  : "bg-gray-50 text-gray-600 hover:bg-red-50 hover:text-red-600"
-              }`}
-            >
-              <div
-                className={`text-xl transition-transform duration-300 ${
-                  liked ? "animate-pulse" : "group-hover:scale-110"
-                }`}
-              >
-                {liked ? <FaThumbsUp /> : <FaRegThumbsUp />}
-              </div>
-              <div className="flex flex-col items-start">
-                <span className="text-sm font-medium">Like</span>
-                <span className="text-xs opacity-75">{likeCount}</span>
-              </div>
-            </button>
-
-            {/* Comment Button */}
-            <button className="group flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-50 text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 transform hover:scale-105">
-              <div className="text-xl transition-transform duration-300 group-hover:scale-110">
-                <FaRegCommentDots />
-              </div>
-              <div className="flex flex-col items-start">
-                <span className="text-sm font-medium">Comment</span>
-                <span className="text-xs opacity-75">0</span>
-              </div>
-            </button>
-
-            {/* Bookmark Button */}
-            <button
-              onClick={handleBookmark}
-              className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 ${
-                bookmarked
-                  ? "bg-yellow-50 text-yellow-600 shadow-md"
-                  : "bg-gray-50 text-gray-600 hover:bg-yellow-50 hover:text-yellow-600"
-              }`}
-            >
-              <div
-                className={`text-xl transition-transform duration-300 ${
-                  bookmarked ? "animate-bounce" : "group-hover:scale-110"
-                }`}
-              >
-                {bookmarked ? <MdBookmark /> : <MdBookmarkBorder />}
-              </div>
-              <div className="flex flex-col items-start">
-                <span className="text-sm font-medium">Save</span>
-                <span className="text-xs opacity-75">
-                  {bookmarked ? "Saved" : "Save"}
-                </span>
-              </div>
-            </button>
-
-            {/* Share Button */}
+          <div className="flex justify-center">
             <div className="relative share-menu-container">
               <button
                 onClick={() => setShowShareMenu(!showShareMenu)}
-                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 ${
+                className={`group flex items-center gap-3 px-6 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 ${
                   showShareMenu
                     ? "bg-green-50 text-green-600 shadow-md"
                     : "bg-gray-50 text-gray-600 hover:bg-green-50 hover:text-green-600"
@@ -328,7 +230,7 @@ const SingleBlog = () => {
                 </div>
                 <div className="flex flex-col items-start">
                   <span className="text-sm font-medium">Share</span>
-                  <span className="text-xs opacity-75">Share</span>
+                  <span className="text-xs opacity-75">Share this post</span>
                 </div>
               </button>
 
@@ -393,6 +295,29 @@ const SingleBlog = () => {
             </div>
           </div>
         </div>
+
+        {/* Admin Actions - Only show for admin users */}
+        {isAdmin() && (
+          <div className="border-t border-gray-200 pt-4 mb-4">
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={handleEdit}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200"
+              >
+                <MdEdit className="text-lg" />
+                <span className="text-sm font-medium">Edit</span>
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200"
+              >
+                <MdDelete className="text-lg" />
+                <span className="text-sm font-medium">Delete</span>
+              </button>
+            </div>
+          </div>
+        )}
+
       </div>
 
       {/* Recent Posts */}

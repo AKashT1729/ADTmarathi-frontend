@@ -12,10 +12,11 @@ const NewPost = () => {
     content: '',
     excerpt: '',
     tags: '',
-    image: null
+    blogImageUrl: '' // <-- changed from image to imageUrl
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
 
   // Redirect if not admin
   React.useEffect(() => {
@@ -32,13 +33,6 @@ const NewPost = () => {
     }));
   };
 
-  const handleImageChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      image: e.target.files[0]
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -50,6 +44,7 @@ const NewPost = () => {
       formDataToSend.append('title', formData.title);
       formDataToSend.append('content', formData.content);
       formDataToSend.append('excerpt', formData.excerpt);
+      formDataToSend.append('blogImageUrl', formData.blogImageUrl); // Use blogImageUrl instead of imageUrl
       
       // Convert tags string to array
       if (formData.tags) {
@@ -57,15 +52,9 @@ const NewPost = () => {
         formDataToSend.append('tags', JSON.stringify(tagsArray));
       }
       
-      if (formData.image) {
-        formDataToSend.append('image', formData.image);
-      }
+      
 
-      const response = await axios.post('/api/v1/blogs/create', formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await axios.post('/api/v1/blogs/create', formDataToSend);
 
       if (response.data.success) {
         setSuccess('Blog post created successfully!');
@@ -74,11 +63,8 @@ const NewPost = () => {
           content: '',
           excerpt: '',
           tags: '',
-          image: null
+          blogImageUrl: ''
         });
-        // Reset file input
-        document.getElementById('image').value = '';
-        
         // Redirect to blog list after 2 seconds
         setTimeout(() => {
           navigate('/blog');
@@ -90,6 +76,7 @@ const NewPost = () => {
       setLoading(false);
     }
   };
+
 
   if (!isAuthenticated() || !isAdmin()) {
     return null; // Component will redirect
@@ -180,18 +167,19 @@ const NewPost = () => {
               />
             </div>
 
-            {/* Image Upload */}
+            {/* Image URL */}
             <div>
-              <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-2">
-                Featured Image
+              <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700 mb-2">
+                Featured Image URL
               </label>
               <input
-                type="file"
-                id="image"
-                name="image"
-                onChange={handleImageChange}
-                accept="image/*"
+                type="url"
+                id="blogImageUrl"
+                name="blogImageUrl"
+                value={formData.blogImageUrl}
+                onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                placeholder="Paste image URL here"
               />
             </div>
 

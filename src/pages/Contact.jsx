@@ -113,7 +113,7 @@ const Contact = () => {
             value={formData.name}
             onChange={handleInputChange}
             placeholder="Your Name"
-            className="w-9/10 h-12 bg-[#EAF4EA] p-3 rounded-md text-center text-sm placeholder-gray-700 outline-none focus:ring-2 focus:ring-green-300"
+            className="w-full h-12 bg-[#EAF4EA] p-3 rounded-md text-center text-sm placeholder-gray-700 outline-none focus:ring-2 focus:ring-green-300"
             disabled={isSubmitting}
           />
           <input
@@ -122,7 +122,7 @@ const Contact = () => {
             value={formData.email}
             onChange={handleInputChange}
             placeholder="Your Email"
-            className="w-9/10 h-12 bg-[#EAF4EA] p-3 rounded-md text-center text-sm placeholder-gray-700 outline-none focus:ring-2 focus:ring-green-300"
+            className="w-full h-12 bg-[#EAF4EA] p-3 rounded-md text-center text-sm placeholder-gray-700 outline-none focus:ring-2 focus:ring-green-300"
             disabled={isSubmitting}
           />
           <textarea
@@ -131,14 +131,14 @@ const Contact = () => {
             value={formData.message}
             onChange={handleInputChange}
             placeholder="Your Message"
-            className="w-9/10 bg-[#EAF4EA] p-3 rounded-md text-center text-sm placeholder-gray-700 outline-none resize-none focus:ring-2 focus:ring-green-300"
+            className="w-full bg-[#EAF4EA] p-3 rounded-md text-center text-sm placeholder-gray-700 outline-none resize-none focus:ring-2 focus:ring-green-300"
             disabled={isSubmitting}
           ></textarea>
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`w-9/10 h-12 font-semibold py-3 rounded-md text-sm transition ${
+            className={`w-full h-12 font-semibold py-3 rounded-md text-sm transition ${
               isSubmitting
                 ? 'bg-gray-400 cursor-not-allowed text-gray-600'
                 : 'bg-[#74c69d] hover:bg-[#5cb984] text-white'

@@ -13,28 +13,28 @@ import NewPost from "./pages/NewPost";
 import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
-  const location = useLocation();
-  const hideNavbarPaths = ['/contact', '/marketrates', '/blogpost'];
-  const hideNavbar = hideNavbarPaths.includes(location.pathname.toLowerCase());
-
   return (
     <AuthProvider>
-      {!hideNavbar && <Navbar />}
-      <Routes>
-        <Route path="/"   element={<Home />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/marketrates" element={<MarketRates />} />
-        <Route path="/blogpost" element={<BlogPost />} />
-        <Route path="/blog" element={<BlogPost />} />
-        <Route path="/singleblog" element={<SingleBlog />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/admin" element={<LogIn />} />
-        <Route path="/admin/new-post" element={<NewPost />} />
-        <Route path="/forgot-password" element={<ChangePassword />}/>
-        {/* Add other routes here */}
-      </Routes>
-      <Footer />
+      <div className="pb-20 min-h-screen flex flex-col overflow-x-hidden"> {/* Add bottom padding for footer */}
+        <Navbar />
+        <div className="flex-1">
+          <Routes>
+            <Route path="/"   element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/marketrates" element={<MarketRates />} />
+            <Route path="/blogpost" element={<BlogPost />} />
+            <Route path="/blog" element={<BlogPost />} />
+            <Route path="/singleblog" element={<SingleBlog />} />
+            <Route path="/login" element={<LogIn />} />
+            <Route path="/admin" element={<LogIn />} />
+            <Route path="/admin/new-post" element={<NewPost />} />
+            <Route path="/forgot-password" element={<ChangePassword />}/>
+            {/* Add other routes here */}
+          </Routes>
+        </div>
+        <Footer />
+      </div>
     </AuthProvider>
   );
 }
