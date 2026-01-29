@@ -10,6 +10,7 @@ import SingleBlog from "./pages/SingleBlog";
 import LogIn from "./pages/LogIn";
 import ChangePassword from "./pages/ChangePassword";
 import NewPost from "./pages/NewPost";
+import AdminContacts from "./pages/AdminContacts";
 import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
             <Route path="/login" element={<LogIn />} />
             <Route path="/admin" element={<LogIn />} />
             <Route path="/admin/new-post" element={<NewPost />} />
+            <Route path="/admin/contacts" element={<AdminContacts />} />
             <Route path="/forgot-password" element={<ChangePassword />}/>
             {/* Add other routes here */}
           </Routes>

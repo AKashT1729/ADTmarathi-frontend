@@ -24,8 +24,12 @@ const LogIn = () => {
       const result = await login(payload);
 
       if (result.success) {
-        // Redirect to home page where admin can access sidebar features
-        navigate("/");
+        // Redirect based on user role
+        if (result.user?.role === 'admin') {
+          navigate("/admin/contacts");
+        } else {
+          navigate("/");
+        }
       } else {
         setError(result.error || "Invalid credentials. Please try again.");
       }

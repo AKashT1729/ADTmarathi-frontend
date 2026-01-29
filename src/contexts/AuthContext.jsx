@@ -49,17 +49,17 @@ export const AuthProvider = ({ children }) => {
       
       if (response.data.success) {
         const { accessToken, user: userData } = response.data.data;
-        
+
         // Store token
         localStorage.setItem('accessToken', accessToken);
-        
+
         // Set axios default header
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-        
+
         // Set user state
         setUser(userData);
-        
-        return { success: true };
+
+        return { success: true, user: userData };
       }
     } catch (error) {
       return { 
